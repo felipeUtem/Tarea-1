@@ -1,0 +1,105 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+#include <string.h>
+#define SIZE 25
+ 
+void generarRandom(int [], int);
+void generarArchivo (int v[] );
+
+ 
+int main (int argc, char *argv[]) // cololo los argumentos
+
+{
+      char aux[] ="-g";  // para ejecutar sorteo de loteria
+      char aux2[]= "-v"; // Para mostrar intecrantes del grupo
+      char c [5];        // almaceno el parametro
+
+
+
+      if (argc > 1)
+	{
+	   strcpy(c,argv[1]); // copio el parametro ingresado en el terminal
+
+	   if(strcmp(c,aux)==0) // si es -g
+	    {
+		srand(time(NULL));
+      		int vector[SIZE] = {0};
+      		generarRandom(vector, SIZE); //llamo a la funcion
+      		generarArchivo(vector);      //llamo a la funcion
+      		
+      	
+	    }
+
+	   if(strcmp(c,aux2)==0) // si es -v
+	    {
+		printf("\n\n");	        
+		printf("LOS INTEGRANTES DEL GRUPO SON: \n");
+                printf("Felipe Abarca Arias - 18.390.390-K \n");
+                printf("Jaime Quiñelen Villar -18.116.826-9 \n");
+                printf("Ignacio Ortega Bustamante -18.123.127-0  \n\n");
+	    }
+	 
+           
+     }
+      system("PAUSE");
+      return 0;
+}
+ 
+void generarArchivo (int v[])
+{
+    int i;
+	FILE *datos;
+	datos = fopen ("loteria.csv","w"); // crea el .csv
+	if (datos==NULL)
+		printf ("No puedo crear el fichero\n");
+	else
+	{
+		
+        time_t tiempo = time(0);
+        struct tm *tlocal = localtime(&tiempo);
+        char output[128];
+        strftime(output,128,"20%y-%m-%d %H:%M:%S",tlocal); // genero fecha y hora
+        fprintf(datos, output);
+        fprintf (datos,";");
+        for (i=0;i<14;i++)
+	{
+            
+	   fprintf (datos,"%d",v[i]); // guardo en el archivo
+	   fprintf (datos,";");
+           
+          
+         }
+
+        fclose (datos);
+}
+	printf("\n");
+	printf("\n");
+	printf("EL SORTEO DE LOTERIA SE A EFECTUADO CON EXITO \n");
+	printf("SE A GENEADO UN ARCHIVO DE TEXTO LLAMADO LOTERIA.CSV \n");
+	printf("PORFAVOR REVISE LA CARPETA\n\n");		
+}    
+          
+void generarRandom(int v[], int size)
+{
+     int i, j, num, dupl;
+ 
+     //genero mis numeros al azar
+     for (i = 0; i < size; i++){
+         num = 1 + rand() % size;
+         dupl = 0;
+         
+         for (j = 0; j <= i; j++){
+             if (num == v[j]){
+                dupl = 1;
+                break;
+             }
+         }
+         if (dupl == 1)
+            i--;
+         else
+            v[i] = num;
+     }
+}
+ 
+
